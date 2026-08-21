@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Agendamento de carros da frota</h1>
+<p>Solicite, aprove e acompanhe viagens em um só lugar.</p>
+<a href="{% url 'accounts:login' %}" class="btn btn-primary">Entrar</a>
+<a href="{% url 'accounts:signup' %}" class="btn btn-outline-dark">Criar conta</a>
+{% endblock %}

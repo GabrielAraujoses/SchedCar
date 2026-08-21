@@ -38,7 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cars',
+
+    #Apps do projeto
+    'vehicles',
+    'accounts',
+    'core',
+    'trips',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +61,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,12 +127,36 @@ STATIC_URL = 'static/'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
+email_backend = os.getenv(
+    'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend'
+)
 MAILERS = {
     'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        'BACKEND': email_backend,
+        'HOST': os.getenv('EMAIL_HOST', ''),
+        'PORT': int(os.getenv('EMAIL_PORT', '25')),
+        'USERNAME': os.getenv('EMAIL_HOST_USER', ''),
+        'PASSWORD': os.getenv('EMAIL_HOST_PASSWORD', ''),
+        'USE_TLS': os.getenv('EMAIL_USE_TLS', 'False').lower() == 'true',
+        'USE_SSL': os.getenv('EMAIL_USE_SSL', 'False').lower() == 'true',
     },
 }
+
+#Modelo de usuário
+AUTH_USER_MODEL = 'accounts.User'
+
+#Configuraçâo de login
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'core:dashboard'
+LOGOUT_REDIRECT_URL = 'accounts:login'
+
+#Configuraçâo de arquivos estáticos
+STATICFILES_DIRS = [BASE_DIR / 'app' / 'static']
 
 #Configuraçâo de arquivos de mídia
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+#Configuraçâo de email
+DEFAULT_FROM_EMAIL = 'no-reply@fleetsystem.local'
+MANAGER_NOTIFICATION_EMAILS = ''

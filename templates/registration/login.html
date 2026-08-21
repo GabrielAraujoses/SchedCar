@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card p-4" style="max-width:400px;margin:auto;">
+    <h4>Entrar</h4>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3"><label>{{ form.username.label }}</label>{{ form.username }}</div>
+        <div class="mb-3"><label>Senha</label>{{ form.password }}</div>
+        <button class="btn btn-primary w-100">Entrar</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h4>Usuários</h4>
+    <a href="{% url 'accounts:user_create' %}" class="btn btn-primary">+ Novo usuário</a>
+</div>
+<table class="table table-bordered bg-white">
+    <thead><tr><th>Matrícula</th><th>Nome</th><th>Papel</th><th></th></tr></thead>
+    <tbody>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.employee_id }}</td>
+            <td>{{ u.get_full_name|default:"-" }}</td>
+            <td>{{ u.get_role_display }}</td>
+            <td>
+                <a href="{% url 'accounts:user_edit' u.pk %}" class="btn btn-sm btn-outline-dark">Editar</a>
+                {% if u != user %}
+                <a href="{% url 'accounts:user_delete' u.pk %}" class="btn btn-sm btn-outline-danger">Excluir</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

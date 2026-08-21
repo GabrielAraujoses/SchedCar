@@ -99,6 +99,8 @@ http://127.0.0.1:8000/admin/
 
 - O projeto usa SQLite para desenvolvimento.
 - As imagens de veículos ficam em `media/cars/`.
+- Em desenvolvimento, as notificações ficam no terminal porque o backend de e-mail padrão é o console.
+- Para enviar notificações aos gerentes, configure `EMAIL_BACKEND`, `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD` e `EMAIL_USE_TLS` no ambiente, além de cadastrar um e-mail real no usuário com papel de gerente.
 
 ## Estrutura principal
 

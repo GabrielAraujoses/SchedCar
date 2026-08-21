@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Excluir veículo</h4>
+<p>Tem certeza que deseja excluir <strong>{{ object }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger">Sim, excluir</button>
+</form>
+{% endblock %}

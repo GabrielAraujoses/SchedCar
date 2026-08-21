@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Veículos</h4>
+{% if user.is_manager %}
+<a href="{% url 'vehicles:create' %}" class="btn btn-primary mb-3">+ Novo veículo</a>
+{% endif %}
+<div class="row">
+    {% for vehicle in vehicles %}
+    <div class="col-md-4 mb-3">
+        <div class="card h-100">
+            {% if vehicle.photo %}
+                <img src="{{ vehicle.photo.url }}" class="card-img-top" style="height:180px;object-fit:cover;">
+            {% else %}
+                <div class="bg-light text-center text-muted py-5">Sem foto</div>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ vehicle.name }}</h5>
+                <p class="card-text mb-1">{{ vehicle.brand|default:"Marca não informada" }} · {{ vehicle.license_plate }}</p>
+                <p class="card-text"><span class="badge bg-secondary">{{ vehicle.get_status_display }}</span></p>
+                {% if user.is_manager %}
+                <a href="{% url 'vehicles:edit' vehicle.pk %}" class="btn btn-sm btn-outline-dark">Editar</a>
+                <a href="{% url 'vehicles:delete' vehicle.pk %}" class="btn btn-sm btn-outline-danger">Excluir</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-muted">Nenhum veículo cadastrado.</p>
+    {% endfor %}
+</div>
+{% endblock %}
