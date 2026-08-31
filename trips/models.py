@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
@@ -17,6 +19,9 @@ class ReferenceNumberCounter(models.Model):
 
 
 class Trip(models.Model):
+	MINIMUM_LEAD_BUSINESS_DAYS = 3
+	OPERATIONAL_INTERVAL = timedelta(hours=2)
+
 	class Status(models.TextChoices):
 		PENDING = 'pending', 'Pendente de aprovação'
 		APPROVED = 'approved', 'Aprovada'
@@ -82,13 +87,41 @@ class Trip(models.Model):
 			departure = timezone.make_aware(departure)
 		return departure, self.expected_return
 
+	@classmethod
+	def minimum_departure_datetime(cls):
+		"""Retorna o primeiro horário aceito após três dias úteis, sem feriados."""
+		now = timezone.localtime()
+		minimum_date = now.date()
+		business_days = 0
+
+		while business_days < cls.MINIMUM_LEAD_BUSINESS_DAYS:
+			minimum_date += timedelta(days=1)
+			if minimum_date.weekday() < 5:
+				business_days += 1
+
+		return timezone.make_aware(
+			timezone.datetime.combine(minimum_date, now.timetz().replace(tzinfo=None))
+		)
+
 	def clean(self):
 		errors = {}
 
 		if self.date and self.departure_time and self.expected_return:
 			departure, return_time = self._time_range()
+			now = timezone.localtime()
+			if departure <= now:
+				errors['date'] = 'A data e o horário de saída devem estar no futuro.'
+			elif departure < self.minimum_departure_datetime():
+				minimum = self.minimum_departure_datetime()
+				errors['date'] = (
+					'Solicitações devem ser feitas com pelo menos 3 dias úteis de antecedência. '
+					f'O primeiro horário disponível é {minimum.strftime("%d/%m/%Y às %H:%M")}.'
+				)
 			if return_time <= departure:
 				errors['expected_return'] = 'A previsão de retorno deve ser depois do horário de saída.'
+
+		if self.passenger_count is not None and self.passenger_count < 1:
+			errors['passenger_count'] = 'Informe pelo menos 1 passageiro.'
 
 		if self.vehicle_id and self.passenger_count and self.vehicle:
 			if self.passenger_count > self.vehicle.capacity:
@@ -108,8 +141,7 @@ class Trip(models.Model):
 			raise ValidationError(errors)
 
 	def _has_conflict(self, field_name, value):
-		"""Compara os intervalos [saída, retorno] com outras viagens ativas
-		do mesmo veículo/motorista para detectar sobreposição de horário."""
+		"""Compara períodos de viagem incluindo o intervalo operacional de 2 horas."""
 		departure, return_time = self._time_range()
 		candidates = Trip.objects.filter(
 			**{field_name: value}, status__in=self.ACTIVE_STATUSES
@@ -117,7 +149,10 @@ class Trip(models.Model):
 
 		for other in candidates:
 			other_departure, other_return = other._time_range()
-			if departure < other_return and other_departure < return_time:
+			if (
+				departure < other_return + self.OPERATIONAL_INTERVAL
+				and other_departure < return_time + self.OPERATIONAL_INTERVAL
+			):
 				return True
 		return False
 

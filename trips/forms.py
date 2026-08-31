@@ -1,10 +1,7 @@
 from django import forms
-from django.contrib.auth import get_user_model
 
-from vehicles.models import Vehicle
 from .models import Trip
 
-User = get_user_model()
 FIELD_CLASS = 'form-control'
 
 
@@ -30,21 +27,11 @@ class TripRequestForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.required = True
-
-
-class TripApprovalForm(forms.Form):
-    vehicle = forms.ModelChoiceField(
-        queryset=Vehicle.objects.filter(is_active=True, status=Vehicle.Status.AVAILABLE),
-        label='Veículo', widget=forms.Select(attrs={'class': 'form-select'}),
-    )
-    driver = forms.ModelChoiceField(
-        queryset=User.objects.filter(role='driver', is_active=True),
-        label='Motorista', widget=forms.Select(attrs={'class': 'form-select'}),
-    )
-
-
-class TripRejectionForm(forms.Form):
-    rejection_reason = forms.CharField(
-        label='Motivo da rejeição', max_length=255,
-        widget=forms.Textarea(attrs={'class': FIELD_CLASS, 'rows': 3}),
-    )
+        minimum_departure = Trip.minimum_departure_datetime()
+        self.fields['date'].widget.attrs['min'] = minimum_departure.date().isoformat()
+        self.fields['date'].help_text = (
+            'Solicite com pelo menos 3 dias úteis de antecedência. '
+            f'O primeiro horário possível é {minimum_departure.strftime("%d/%m/%Y às %H:%M")}.'
+        )
+        self.fields['passenger_count'].min_value = 1
+        self.fields['passenger_count'].widget.attrs['min'] = 1

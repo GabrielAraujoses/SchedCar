@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h4>Protocolo {{ trip.reference_number }} — {{ trip.get_status_display }}</h4>
+<h4>Protocolo {{ trip.reference_number }} · {{ trip.get_status_display }}</h4>
 
 {% if user.is_manager and trip.status == 'pending' or user.is_manager and trip.status == 'approved' %}
 <a href="{% url 'trips:edit' trip.pk %}" class="btn btn-outline-dark mb-3">Alterar pedido</a>
@@ -18,26 +18,19 @@
         {% else %}A definir{% endif %}
     </dd>
     <dt class="col-sm-3">Motorista</dt><dd class="col-sm-9">{{ trip.driver|default:"A definir" }}</dd>
+    {% if trip.status == 'rejected' %}
+    <dt class="col-sm-3">Motivo</dt><dd class="col-sm-9">{{ trip.rejection_reason }}</dd>
+    {% endif %}
 </dl>
 
-{% if user.is_manager and trip.status == 'pending' %}
-<div class="card p-3 mb-3">
-    <h6>Aprovar</h6>
-    <form method="post" action="{% url 'trips:approve' trip.pk %}">
-        {% csrf_token %}
-        {{ approval_form.vehicle }}
-        {{ approval_form.driver }}
-        <button class="btn btn-success mt-2">Aprovar</button>
-    </form>
-</div>
-<div class="card p-3 mb-3">
-    <h6>Rejeitar</h6>
-    <form method="post" action="{% url 'trips:reject' trip.pk %}">
-        {% csrf_token %}
-        {{ rejection_form.rejection_reason }}
-        <button class="btn btn-outline-danger mt-2">Rejeitar</button>
-    </form>
-</div>
+{% if user.is_driver and trip.driver == user and trip.status == 'approved' %}
+<form method="post" action="{% url 'trips:start' trip.pk %}">
+    {% csrf_token %}<button class="btn btn-primary">Iniciar viagem</button>
+</form>
+{% elif user.is_driver and trip.driver == user and trip.status == 'in_progress' %}
+<form method="post" action="{% url 'trips:complete' trip.pk %}">
+    {% csrf_token %}<button class="btn btn-success">Concluir viagem</button>
+</form>
 {% endif %}
 
 {% if user.is_employee and trip.employee == user and trip.can_be_cancelled %}

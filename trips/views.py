@@ -8,8 +8,9 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from core.mixins import DriverRequiredMixin, EmployeeRequiredMixin, ManagerRequiredMixin
 from vehicles.models import Vehicle
 from . import notifications
-from .forms import TripApprovalForm, TripRejectionForm, TripRequestForm
+from .forms import TripRequestForm
 from .models import Trip
+from .services import allocate_trip
 
 
 class TripRequestView(EmployeeRequiredMixin, CreateView):
@@ -28,10 +29,36 @@ class TripRequestView(EmployeeRequiredMixin, CreateView):
 					form.add_error(field if field in form.fields else None, message)
 			return self.form_invalid(form)
 
+		vehicle, driver, rejection_reason = allocate_trip(trip)
+		if vehicle and driver:
+			trip.vehicle = vehicle
+			trip.driver = driver
+			trip.status = Trip.Status.APPROVED
+			try:
+				trip.full_clean()
+			except ValidationError as error:
+				for field, errors in error.message_dict.items():
+					for message in errors:
+						form.add_error(field if field in form.fields else None, message)
+				return self.form_invalid(form)
+		else:
+			trip.status = Trip.Status.REJECTED
+			trip.rejection_reason = rejection_reason
+
 		trip.save()
 		notifications.notify_reference_number_issued(trip)
-		notifications.notify_managers_new_request(trip)
-		messages.success(self.request, f'Solicitação registrada! Protocolo: {trip.reference_number}')
+		notifications.notify_approval_result(trip)
+		if trip.status == Trip.Status.APPROVED:
+			messages.success(
+				self.request,
+				f'Solicitação aprovada automaticamente. Protocolo: {trip.reference_number}. '
+				f'Veículo: {trip.vehicle}. Motorista: {trip.driver}.',
+			)
+		else:
+			messages.error(
+				self.request,
+				f'Solicitação não aprovada. Motivo: {trip.rejection_reason}',
+			)
 		return redirect('trips:detail', pk=trip.pk)
 
 
@@ -96,61 +123,6 @@ class TripUpdateView(ManagerRequiredMixin, UpdateView):
 		trip.save()
 		messages.success(self.request, 'Pedido atualizado com sucesso.')
 		return redirect('trips:detail', pk=trip.pk)
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context['approval_form'] = TripApprovalForm()
-		context['rejection_form'] = TripRejectionForm()
-		return context
-
-
-class TripApproveView(ManagerRequiredMixin, View):
-	http_method_names = ['post']
-
-	def post(self, request, *args, **kwargs):
-		trip = get_object_or_404(Trip, pk=kwargs['pk'])
-		form = TripApprovalForm(request.POST)
-
-		if trip.status != Trip.Status.PENDING:
-			messages.warning(request, 'Esta viagem já foi processada.')
-			return redirect('trips:detail', pk=trip.pk)
-
-		if form.is_valid():
-			vehicle, driver = form.cleaned_data['vehicle'], form.cleaned_data['driver']
-			try:
-				trip.approve(manager=request.user, vehicle=vehicle, driver=driver)
-			except ValidationError as error:
-				for errors in error.message_dict.values():
-					for message in errors:
-						messages.error(request, message)
-				return redirect('trips:detail', pk=trip.pk)
-
-			vehicle.status = Vehicle.Status.ON_TRIP
-			vehicle.save(update_fields=['status'])
-			notifications.notify_approval_result(trip)
-			messages.success(request, f'Viagem {trip.reference_number} aprovada.')
-		else:
-			messages.error(request, 'Selecione um veículo e um motorista válidos.')
-		return redirect('trips:detail', pk=trip.pk)
-
-
-class TripRejectView(ManagerRequiredMixin, View):
-	http_method_names = ['post']
-
-	def post(self, request, *args, **kwargs):
-		trip = get_object_or_404(Trip, pk=kwargs['pk'])
-		form = TripRejectionForm(request.POST)
-		if trip.status != Trip.Status.PENDING:
-			messages.warning(request, 'Esta viagem já foi processada.')
-			return redirect('trips:detail', pk=trip.pk)
-		if form.is_valid():
-			trip.reject(manager=request.user, reason=form.cleaned_data['rejection_reason'])
-			notifications.notify_approval_result(trip)
-			messages.success(request, f'Viagem {trip.reference_number} rejeitada.')
-		else:
-			messages.error(request, 'Informe o motivo da rejeição.')
-		return redirect('trips:detail', pk=trip.pk)
-
 
 class TripStartView(DriverRequiredMixin, View):
 	http_method_names = ['post']

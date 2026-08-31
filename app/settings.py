@@ -150,9 +150,6 @@ LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'core:dashboard'
 LOGOUT_REDIRECT_URL = 'accounts:login'
 
-#Configuraçâo de arquivos estáticos
-STATICFILES_DIRS = [BASE_DIR / 'app' / 'static']
-
 #Configuraçâo de arquivos de mídia
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

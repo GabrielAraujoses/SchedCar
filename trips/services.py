@@ -1,5 +1,60 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+
+from vehicles.models import Vehicle
+
+
+def allocate_trip(trip):
+    """Seleciona o menor veículo compatível e um motorista livre para a viagem."""
+    all_compatible_vehicles = Vehicle.objects.filter(capacity__gte=trip.passenger_count)
+    if not all_compatible_vehicles.exists():
+        return None, None, (
+            f'Não há veículo cadastrado para {trip.passenger_count} passageiros.'
+        )
+
+    eligible_vehicles = all_compatible_vehicles.filter(is_active=True).exclude(
+        status__in=[Vehicle.Status.MAINTENANCE, Vehicle.Status.INACTIVE]
+    ).order_by('capacity', 'name')
+    if not eligible_vehicles.exists():
+        return None, None, (
+            'Os veículos compatíveis estão em manutenção ou inativos.'
+        )
+
+    vehicle = next(
+        (
+            candidate
+            for candidate in eligible_vehicles
+            if not trip._has_conflict('vehicle', candidate.pk)
+        ),
+        None,
+    )
+    if vehicle is None:
+        return None, None, (
+            'Não há veículo compatível livre para o período solicitado, '
+            'considerando os conflitos de agenda e o intervalo operacional.'
+        )
+
+    User = get_user_model()
+    active_drivers = User.objects.filter(role='driver', is_active=True).order_by('employee_id')
+    if not active_drivers.exists():
+        return None, None, 'Não há motorista ativo disponível para a viagem.'
+
+    driver = next(
+        (
+            candidate
+            for candidate in active_drivers
+            if not trip._has_conflict('driver', candidate.pk)
+        ),
+        None,
+    )
+    if driver is None:
+        return None, None, (
+            'Não há motorista livre para o período solicitado, '
+            'considerando os conflitos de agenda e o intervalo operacional.'
+        )
+
+    return vehicle, driver, ''
 
 
 def _send(subject, message, recipients):
