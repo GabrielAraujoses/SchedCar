@@ -1,0 +1,408 @@
+[
+  {
+    "model": "vehicles.brand",
+    "pk": 1,
+    "fields": {"name": "Renault"}
+  },
+  {
+    "model": "vehicles.brand",
+    "pk": 2,
+    "fields": {"name": "Fiat"}
+  },
+  {
+    "model": "vehicles.brand",
+    "pk": 3,
+    "fields": {"name": "Chevrolet"}
+  },
+  {
+    "model": "vehicles.brand",
+    "pk": 4,
+    "fields": {"name": "Hyundai"}
+  },
+  {
+    "model": "vehicles.brand",
+    "pk": 5,
+    "fields": {"name": "Volkswagen"}
+  },
+  {
+    "model": "vehicles.brand",
+    "pk": 6,
+    "fields": {"name": "Toyota"}
+  },
+  {
+    "model": "vehicles.brand",
+    "pk": 7,
+    "fields": {"name": "Mercedes-Benz"}
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 1,
+    "fields": {
+      "name": "Kwid",
+      "brand": 1,
+      "license_plate": "ABC1D23",
+      "capacity": 4,
+      "status": "available",
+      "photo": "vehicles/ABC1D23/kwid.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 2,
+    "fields": {
+      "name": "Mobi Like",
+      "brand": 2,
+      "license_plate": "MOB2A01",
+      "capacity": 4,
+      "status": "available",
+      "photo": "vehicles/MOB2A01/fiat_mobi_like.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 3,
+    "fields": {
+      "name": "Onix",
+      "brand": 3,
+      "license_plate": "ONX2B02",
+      "capacity": 4,
+      "status": "available",
+      "photo": "vehicles/ONX2B02/chevrolet_onix.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 4,
+    "fields": {
+      "name": "HB20",
+      "brand": 4,
+      "license_plate": "HBD2C03",
+      "capacity": 4,
+      "status": "available",
+      "photo": "vehicles/HBD2C03/hb20.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 5,
+    "fields": {
+      "name": "Polo",
+      "brand": 5,
+      "license_plate": "POL2D04",
+      "capacity": 4,
+      "status": "available",
+      "photo": "vehicles/POL2D04/polo.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 6,
+    "fields": {
+      "name": "Yaris",
+      "brand": 6,
+      "license_plate": "YRS2E05",
+      "capacity": 4,
+      "status": "available",
+      "photo": "vehicles/YRS2E05/toyota_yaris.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 7,
+    "fields": {
+      "name": "Argo",
+      "brand": 2,
+      "license_plate": "ARG2F06",
+      "capacity": 4,
+      "status": "available",
+      "photo": "vehicles/ARG2F06/fiat_argo.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 8,
+    "fields": {
+      "name": "T-Cross",
+      "brand": 5,
+      "license_plate": "TCR2G07",
+      "capacity": 4,
+      "status": "available",
+      "photo": "vehicles/TCR2G07/t_cross_volkswagen.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 9,
+    "fields": {
+      "name": "Sprinter",
+      "brand": 7,
+      "license_plate": "SPR2H18",
+      "capacity": 18,
+      "status": "available",
+      "photo": "vehicles/SPR2H18/mercedes_sprinter.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "vehicles.vehicle",
+    "pk": 10,
+    "fields": {
+      "name": "Master",
+      "brand": 1,
+      "license_plate": "MST2J18",
+      "capacity": 18,
+      "status": "available",
+      "photo": "vehicles/MST2J18/renault_master.jpg",
+      "is_active": true,
+      "created_at": "2026-08-30T22:00:00Z"
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$kEC85xnpCuEqVJOTg0yQQM$9WpGt+ycwh+uWEL5HkUUOhEKYRpBTQh4R3DGDdCbMc0=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Lucas",
+      "last_name": "Loops",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "2001",
+      "email": "lucas@test.com",
+      "role": "employee",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$3qQ3G2BBAIKtMmpOsKnPEB$/U6gEs9QwLAETJpTcXxnnieYP3CR1TwrCdfQrnCrnQY=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Davi",
+      "last_name": "Davas",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "2002",
+      "email": "davi@test.com",
+      "role": "employee",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$i0JljG76pxKkgj0lh27Fq8$x9l0+4JS3i2wLk3MTOekXsP6k94/MAd5ZSBM64Lg/IQ=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Gabriel",
+      "last_name": "Élio",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "2003",
+      "email": "gabriel@test.com",
+      "role": "employee",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$LLCNPTWxy5wNbhB3G8U3nU$TRLa7uiSet88suYWY4Dis9an0S0MUR1uPgnR8fddv9o=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Kauã",
+      "last_name": "Turing",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "2004",
+      "email": "kaua@test.com",
+      "role": "employee",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$a1RGxUrFZu7PW6OuNSw1kI$t7Q7UwoCqFjhbRjqG2RRadfeROzhzvfrjH9dTcbj0Q4=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Pedro",
+      "last_name": "Sharp",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "2005",
+      "email": "pedro@test.com",
+      "role": "employee",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$gpfUX1vLVCvgGyvEYZWuFZ$Sd3WMrWcyCgLLfV0w2a+l4BY+K3am8X59jqcrFirDao=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Ana",
+      "last_name": "Java",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "3001",
+      "email": "ana@test.com",
+      "role": "driver",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$PU0d8t1YtC1mQ8c20MUrjc$PJJxftNXDlsW6YIoRzVNZmWQ0Xlzyd3Vc01qYBHyzNM=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "João",
+      "last_name": "Jira",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "3002",
+      "email": "joao@test.com",
+      "role": "driver",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$o6Wh7KqubxBmMAmlBYC8qH$IDh58BrTZL26fJyCYIGQQDAdqWGTLvUXaajLNUitFwY=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Carlos",
+      "last_name": "Magno",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "3003",
+      "email": "carlos@test.com",
+      "role": "driver",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$6L3DbN2W7Qck8LzZ3FXZJZ$OIcZ9KOuGZD+CJoayviU3kY8w6qSDIUkiNZyO68DFEY=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Gil",
+      "last_name": "Gibson",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "3004",
+      "email": "gil@test.com",
+      "role": "driver",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 10,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$by54Gq5MkGKN9w1gqw3g5V$2t8vUDszvrMeDublXeRwDn3gZ9T2OqoGDYCTDzJVRcs=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Junior",
+      "last_name": "Senior",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "3005",
+      "email": "junior.senior@test.com",
+      "role": "driver",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 11,
+    "fields": {
+      "password": "pbkdf2_sha256$1500000$by54Gq5MkGKN9w1gqw3g5V$2t8vUDszvrMeDublXeRwDn3gZ9T2OqoGDYCTDzJVRcs=",
+      "last_login": null,
+      "is_superuser": true,
+      "first_name": "Junior",
+      "last_name": "Super",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2026-08-30T22:00:00Z",
+      "employee_id": "9001",
+      "email": "junior.super@test.com",
+      "role": "manager",
+      "phone_number": "",
+      "created_at": "2026-08-30T22:00:00Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

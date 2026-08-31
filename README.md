@@ -10,7 +10,7 @@ O porto do itaqui possui rotinas que exigem deslocamentos frequentes dos colabor
 
 Frota:
 
-- frota de 8 veiculos
+- frota de 10 veiculos
 - 2 veiculos com capacidade para 18 passageiros
 - 8 com capacidade para 4 passageiros
 - veiculos menores atendem reunioes, inspecoes e deslocamentos
@@ -77,7 +77,33 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-### 4) Iniciar o servidor
+### 4) Carregar dados de demonstração
+
+Em um banco novo, carregue a frota e as contas de teste:
+
+```bash
+python manage.py loaddata dados_demo
+```
+
+Contas disponíveis:
+
+| Papel | Matrícula | Senha |
+| --- | --- | --- |
+| Colaborador | 2001 | lucastest12345 |
+| Colaborador | 2002 | davitest12345 |
+| Colaborador | 2003 | gabrieltest12345 |
+| Colaborador | 2004 | kauatest12345 |
+| Colaborador | 2005 | pedrotest12345 |
+| Motorista | 3001 | anatest12345 |
+| Motorista | 3002 | joaotest12345 |
+| Motorista | 3003 | carlostest12345 |
+| Motorista | 3004 | giltest12345 |
+| Motorista | 3005 | juniortest12345 |
+| Gerente e administrador | 9001 | juniortest12345 |
+
+Essas contas são exclusivas para demonstração. Não use essas senhas fora do ambiente local.
+
+### 5) Iniciar o servidor
 
 ```bash
 python manage.py runserver
@@ -98,7 +124,7 @@ http://127.0.0.1:8000/admin/
 ## Observações
 
 - O projeto usa SQLite para desenvolvimento.
-- As imagens de veículos ficam em `media/cars/`.
+- As imagens de demonstração dos veículos ficam em `media/vehicles/`.
 - Em desenvolvimento, as notificações ficam no terminal porque o backend de e-mail padrão é o console.
 - Para enviar notificações aos gerentes, configure `EMAIL_BACKEND`, `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD` e `EMAIL_USE_TLS` no ambiente, além de cadastrar um e-mail real no usuário com papel de gerente.
 

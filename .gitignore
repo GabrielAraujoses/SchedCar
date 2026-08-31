@@ -15,7 +15,11 @@ env/
 local_settings.py
 .db.sqlite3
 db.sqlite3
-media/
+# Arquivos enviados durante o uso local não entram no Git. As fotos da frota de
+# demonstração ficam em media/vehicles e são necessárias para dados_demo.
+media/*
+!media/vehicles/
+!media/vehicles/**
 staticfiles/
 
 # IDE
