@@ -1,0 +1,206 @@
+:root {
+    /*cores*/
+    --primary-color: #2e285b;
+    --button-color: #201c3e;
+    --active-color: #4b428f;
+    /*Glassmorphism*/
+    --glass-bg: rgb(158, 195, 215);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.72);
+    --glass-blur: blur(16px) saturate(32%);
+    --glass-shadow: 0 8px 44px rgba(38, 83, 112, 0.7);
+    --glass-radius: 26px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    width: 100%;
+    background: #bcebe0;
+    background: linear-gradient(201deg, rgba(188, 235, 224, 1) 22%, rgba(171, 214, 228, 1) 40%, rgba(148, 187, 233, 1) 64%);
+    color: var(--primary-color);
+    display:flex;
+    font-family: "Lato", sans-seriff;
+}
+
+.navbar {
+    background-color: var(--glass-bg);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    border-radius: 36px;
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+}
+
+.navbar-brand {
+    color: var(--primary-color);
+}
+
+.navbar-toggler {
+    border-radius:36px;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%232e285b' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar .nav-link {
+    transform-origin:center;
+    transition:transform 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+    color:#675fa2;
+    transform: scale(1.1);
+}
+
+.navbar .nav-link.active {
+    color:var(--active-color);
+}
+
+.navbar .btn {
+    color:rgba(255, 255, 255, 0.55);
+    transform-origin:center;
+    transition:transform 0.2s ease;
+}
+
+.navbar .btn:hover {
+    color:#675fa2;
+    transform: scale(1.1);
+}
+
+.app-content {
+    padding-top: 8rem;
+}
+
+.page-name {
+    margin: 0rem 0rem 1.3rem 3rem;
+}
+
+.box {
+    background-color: var(--glass-bg);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    border-radius: 36px;
+    padding: 2rem;
+}
+
+.card {
+    background-color: var(--glass-bg);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    border-radius: 36px;
+    padding: 2rem;
+    transform-origin:center;
+    transition:transform 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.btn-primary {
+    background-color: var(--glass-bg);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    border-radius: 36px;
+    padding: 0.6rem;
+}
+
+.btn.request-button {
+    color:var(--primary-color);
+    transform-origin:center;
+    transition:transform 0.2s ease;
+}
+
+.btn.request-button:hover {
+    color:white;
+    transform: scale(1.07);
+}
+
+.btn.request-button:active {
+    color:white;
+    transform: scale(1.02);
+}
+
+.list-group {
+    background-color: var(--glass-bg);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    border-radius: 36px;
+    padding: 0.6rem;
+}
+
+.list-group-item {
+    background-color: rgb(200, 225, 239);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    border-radius: 36px;
+    padding: 0.6rem;
+    transition:transform 0.2s ease;
+    margin: 0.5rem 0rem 0.5rem 0rem;
+}
+
+.list-group-item:hover {
+    background-color: rgb(239, 247, 252);
+    transform: scale(1.02);
+}
+
+.trip-table {
+    width: 100%;
+    border-collapse:separate;
+    border-spacing: 0 0.8rem;
+    background-color:transparent;
+}
+
+.trip-table tbody tr {
+    filter:drop-shadow(0px 6px 8px rgba(38 83 112 0.35));
+}
+
+.trip-table tbody td {
+    background-color: rgb(200, 225, 239);
+    padding: 0.1rem;
+    border-top:var(--glass-border);
+    border-bottom:var(--glass-border);
+    border-left:0;
+    border-right:0;
+}
+
+.trip-table tbody td:first-child {
+    border-left:var(--glass-border);
+    border-radius: 36px 0px 0px 36px;
+}
+
+.trip-table tbody td:last-child {
+    border-right:var(--glass-border);
+    border-radius: 0px 36px 36px 0px;
+}
+
+.table-box {
+    background-color: var(--glass-bg);
+    border: var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    border-radius: 36px;
+    padding: 2rem;
+}

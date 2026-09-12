@@ -1,51 +1,57 @@
 {% extends 'base.html' %}
-{% block title %}Painel | Sistema de Frota{% endblock %}
+{% block title %}Painel | SchedCar{% endblock %}
 {% block content %}
-<h1 class="mb-4">Painel</h1>
+<h1 class="page-name">Painel</h1>
 
 {% if user.is_employee %}
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Minhas viagens</h4>
-        <a href="{% url 'trips:request' %}" class="btn btn-primary">Solicitar carro</a>
-    </div>
-    <p>Solicitações pendentes: <strong>{{ pending_count }}</strong></p>
-    <div class="list-group">
-        {% for trip in trips %}
-            <a href="{% url 'trips:detail' trip.pk %}" class="list-group-item list-group-item-action">
-                <strong>{{ trip.reference_number }}</strong> · {{ trip.destination }} · {{ trip.get_status_display }}
-            </a>
-        {% empty %}
-            <p class="text-muted">Nenhuma viagem solicitada.</p>
-        {% endfor %}
+    <div class="box">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>Minhas viagens</h4>
+            <a href="{% url 'trips:request' %}" class="btn btn-primary request-button">Solicitar carro</a>
+        </div>
+        <p>Solicitações pendentes: <strong>{{ pending_count }}</strong></p>
+        <div class="list-group">
+            {% for trip in trips %}
+                <a href="{% url 'trips:detail' trip.pk %}" class="list-group-item list-group-item-action">
+                    <strong>{{ trip.reference_number }}</strong> · {{ trip.destination }} · {{ trip.get_status_display }}
+                </a>
+            {% empty %}
+                <p class="text-muted">Nenhuma viagem solicitada.</p>
+            {% endfor %}
+        </div>
     </div>
 {% elif user.is_manager %}
-    <h4 class="mb-3">Resumo da frota</h4>
-    <div class="row g-3 mb-4">
-        <div class="col-md-3"><div class="card p-3"><small>Solicitações pendentes</small><strong class="fs-3">{{ pending_count }}</strong></div></div>
-        <div class="col-md-3"><div class="card p-3"><small>Veículos disponíveis</small><strong class="fs-3">{{ available_vehicles_count }}</strong></div></div>
-        <div class="col-md-3"><div class="card p-3"><small>Viagens hoje</small><strong class="fs-3">{{ active_trips_today }}</strong></div></div>
-        <div class="col-md-3"><div class="card p-3"><small>Usuários</small><strong class="fs-3">{{ total_users }}</strong></div></div>
-    </div>
-    <h4>Solicitações pendentes</h4>
-    <div class="list-group">
-        {% for trip in pending_trips %}
-            <a href="{% url 'trips:detail' trip.pk %}" class="list-group-item list-group-item-action">
-                <strong>{{ trip.reference_number }}</strong> · {{ trip.destination }} · {{ trip.date|date:"d/m/Y" }}
-            </a>
-        {% empty %}
-            <p class="text-muted">Nenhuma solicitação pendente.</p>
-        {% endfor %}
+    <div class="box">
+        <h4 class="mb-3">Resumo da frota</h4>
+        <div class="row g-3 mb-4">
+            <div class="col-md-3"><div class="card"><small>Solicitações pendentes</small><strong class="fs-3">{{ pending_count }}</strong></div></div>
+            <div class="col-md-3"><div class="card"><small>Veículos disponíveis</small><strong class="fs-3">{{ available_vehicles_count }}</strong></div></div>
+            <div class="col-md-3"><div class="card"><small>Viagens hoje</small><strong class="fs-3">{{ active_trips_today }}</strong></div></div>
+            <div class="col-md-3"><div class="card"><small>Usuários</small><strong class="fs-3">{{ total_users }}</strong></div></div>
+        </div>
+        <h4>Solicitações pendentes</h4>
+        <div class="list-group">
+            {% for trip in pending_trips %}
+                <a href="{% url 'trips:detail' trip.pk %}" class="list-group-item list-group-item-action">
+                    <strong>{{ trip.reference_number }}</strong> · {{ trip.destination }} · {{ trip.date|date:"d/m/Y" }}
+                </a>
+            {% empty %}
+                <p class="text-muted">Nenhuma solicitação pendente.</p>
+            {% endfor %}
+        </div>
     </div>
 {% elif user.is_driver %}
-    <h4 class="mb-3">Minhas viagens</h4>
-    <div class="list-group">
-        {% for trip in my_trips %}
-            <a href="{% url 'trips:detail' trip.pk %}" class="list-group-item list-group-item-action">
-                <strong>{{ trip.reference_number }}</strong> · {{ trip.destination }} · {{ trip.get_status_display }}
-            </a>
-        {% empty %}
-            <p class="text-muted">Nenhuma viagem atribuída.</p>
-        {% endfor %}
+    <div class="box">
+        <h4 class="mb-3">Minhas viagens</h4>
+        <div class="list-group">
+            {% for trip in my_trips %}
+                <a href="{% url 'trips:detail' trip.pk %}" class="list-group-item list-group-item-action">
+                    <strong>{{ trip.reference_number }}</strong> · {{ trip.destination }} · {{ trip.get_status_display }}
+                </a>
+            {% empty %}
+                <p class="text-muted">Nenhuma viagem atribuída.</p>
+            {% endfor %}
+        </div>
     </div>
 {% endif %}
 {% endblock %}
