@@ -1,41 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
-<h4>Protocolo {{ trip.reference_number }} · {{ trip.get_status_display }}</h4>
+<h3 class="protocol-name">Protocolo {{ trip.reference_number }} · {{ trip.get_status_display }}</h3>
 
-{% if user.is_manager and trip.status == 'pending' or user.is_manager and trip.status == 'approved' %}
-<a href="{% url 'trips:edit' trip.pk %}" class="btn btn-outline-dark mb-3">Alterar pedido</a>
-{% endif %}
+<div class="detail-box">
+    
+    <dl class="row">
+        <dt class="col-sm-3">Colaborador</dt><dd class="col-sm-9">{{ trip.employee }}</dd>
+        <dt class="col-sm-3">Destino</dt><dd class="col-sm-9">{{ trip.destination }}</dd>
+        <dt class="col-sm-3">Data</dt><dd class="col-sm-9">{{ trip.date|date:"d/m/Y" }} {{ trip.departure_time }}</dd>
+        <dt class="col-sm-3">Veículo</dt>
+        <dd class="col-sm-9">
+            {% if trip.vehicle %}
+                {{ trip.vehicle }}
+                {% if trip.vehicle.photo %}<br><img src="{{ trip.vehicle.photo.url }}" style="max-width:150px;" class="rounded mt-1">{% endif %}
+            {% else %}A definir{% endif %}
+        </dd>
+        <dt class="col-sm-3">Motorista</dt><dd class="col-sm-9">{{ trip.driver|default:"A definir" }}</dd>
+        {% if trip.status == 'rejected' %}
+        <dt class="col-sm-3">Motivo</dt><dd class="col-sm-9">{{ trip.rejection_reason }}</dd>
+        {% endif %}
+    </dl>
 
-<dl class="row">
-    <dt class="col-sm-3">Colaborador</dt><dd class="col-sm-9">{{ trip.employee }}</dd>
-    <dt class="col-sm-3">Destino</dt><dd class="col-sm-9">{{ trip.destination }}</dd>
-    <dt class="col-sm-3">Data</dt><dd class="col-sm-9">{{ trip.date|date:"d/m/Y" }} {{ trip.departure_time }}</dd>
-    <dt class="col-sm-3">Veículo</dt>
-    <dd class="col-sm-9">
-        {% if trip.vehicle %}
-            {{ trip.vehicle }}
-            {% if trip.vehicle.photo %}<br><img src="{{ trip.vehicle.photo.url }}" style="max-width:150px;" class="rounded mt-1">{% endif %}
-        {% else %}A definir{% endif %}
-    </dd>
-    <dt class="col-sm-3">Motorista</dt><dd class="col-sm-9">{{ trip.driver|default:"A definir" }}</dd>
-    {% if trip.status == 'rejected' %}
-    <dt class="col-sm-3">Motivo</dt><dd class="col-sm-9">{{ trip.rejection_reason }}</dd>
+    {% if user.is_manager and trip.status == 'pending' or user.is_manager and trip.status == 'approved' %}
+    <a href="{% url 'trips:edit' trip.pk %}" class="btn-primary">Alterar pedido</a>
     {% endif %}
-</dl>
+    {% if user.is_driver and trip.driver == user and trip.status == 'approved' %}
+    <form method="post" action="{% url 'trips:start' trip.pk %}">
+        {% csrf_token %}<button class="btn btn-primary">Iniciar viagem</button>
+    </form>
+    {% elif user.is_driver and trip.driver == user and trip.status == 'in_progress' %}
+    <form method="post" action="{% url 'trips:complete' trip.pk %}">
+        {% csrf_token %}<button class="btn btn-success">Concluir viagem</button>
+    </form>
+    {% endif %}
 
-{% if user.is_driver and trip.driver == user and trip.status == 'approved' %}
-<form method="post" action="{% url 'trips:start' trip.pk %}">
-    {% csrf_token %}<button class="btn btn-primary">Iniciar viagem</button>
-</form>
-{% elif user.is_driver and trip.driver == user and trip.status == 'in_progress' %}
-<form method="post" action="{% url 'trips:complete' trip.pk %}">
-    {% csrf_token %}<button class="btn btn-success">Concluir viagem</button>
-</form>
-{% endif %}
-
-{% if user.is_employee and trip.employee == user and trip.can_be_cancelled %}
-<form method="post" action="{% url 'trips:cancel' trip.pk %}">
-    {% csrf_token %}<button class="btn btn-outline-danger">Cancelar viagem</button>
-</form>
-{% endif %}
+    {% if user.is_employee and trip.employee == user and trip.can_be_cancelled %}
+    <form method="post" action="{% url 'trips:cancel' trip.pk %}">
+        {% csrf_token %}<button class="btn-primary-cancel">Cancelar viagem</button>
+    </form>
+    {% endif %}
+</div>
 {% endblock %}

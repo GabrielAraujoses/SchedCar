@@ -18,8 +18,8 @@
                 <p class="card-text mb-1">{{ vehicle.brand|default:"Marca não informada" }} · {{ vehicle.license_plate }}</p>
                 <p class="card-text"><span class="badge bg-secondary">{{ vehicle.get_status_display }}</span></p>
                 {% if user.is_manager %}
-                <a href="{% url 'vehicles:edit' vehicle.pk %}" class="btn btn-sm btn-outline-dark">Editar</a>
-                <a href="{% url 'vehicles:delete' vehicle.pk %}" class="btn btn-sm btn-outline-danger">Excluir</a>
+                <a href="{% url 'vehicles:edit' vehicle.pk %}" class="btn btn-primary">Editar</a>
+                <a href="{% url 'vehicles:delete' vehicle.pk %}" class="btn btn-primary-cancel">Excluir</a>
                 {% endif %}
             </div>
         </div>

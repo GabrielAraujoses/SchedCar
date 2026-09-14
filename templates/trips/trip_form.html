@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-<h4>Solicitar carro</h4>
-<form method="post">
+<h1 class="page-name">Solicitar carro</h1>
+<form class="form-box" method="post">
     {% csrf_token %}
     {% for field in form %}
         <div class="mb-3">

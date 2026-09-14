@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-<h4>Viagens</h4>
+<h1 class="page-name">Viagens</h1>
 <div class="table-box">
     <table class="trip-table">
-        <thead><tr><th>Protocolo</th><th>Destino</th><th>Data</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Protocolo</th><th>Destino</th><th>Data</th><th>Status</th></thead>
         <tbody>
             {% for trip in trips %}
-            <tr>
-                <td>{{ trip.reference_number }}</td>
-                <td>{{ trip.destination }}</td>
-                <td>{{ trip.date|date:"d/m/Y" }}</td>
-                <td>{{ trip.get_status_display }}</td>
-                <td><a href="{% url 'trips:detail' trip.pk %}" class="btn btn-sm btn-outline-dark">Ver</a></td>
-            </tr>
-            {% empty %}
+                {% url 'trips:detail' trip.pk as trip_url %}
+                <tr class="clickable-row">
+                    <td><a href="{{ trip_url }}" class="link-row">{{ trip.reference_number }}</a></td>
+                    <td><a href="{{ trip_url }}" class="link-row">{{ trip.destination }}</a></td>
+                    <td><a href="{{ trip_url }}" class="link-row">{{ trip.date|date:"d/m/Y" }}</a></td>
+                    <td><a href="{{ trip_url }}" class="link-row">{{ trip.get_status_display }}</a></td>
+                </tr>
+                {% empty %}
             <tr><td colspan="5">Nenhuma viagem encontrada.</td></tr>
             {% endfor %}
         </tbody>
